@@ -207,7 +207,7 @@ class Fifo {
      * @param[in] availSpace Available space in the destination buffer, in elements
      * @return Number of elements read
      */
-    size_t read(T *destination, size_t availSpace) {
+    size_t read(T *destination, size_t availSpace) const {
         const auto nbElementsToCopy = availSpace;
         assert(destination != nullptr);
 
@@ -233,12 +233,6 @@ class Fifo {
         auto readIndex = (m_readIdx + idx) % t_size;
         return (m_buffer[readIndex]);
     }
-
-    /**
-     * @brief Direct accessor to the underlying data element - should not be used...
-     * @return const T* Pointer to the internal data buffer
-     */
-    const T *data(void) { return m_buffer.data(); }
 
     /**
      * @brief Iterator object to simplify operations on FIFO
