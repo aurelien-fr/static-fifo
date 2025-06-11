@@ -36,7 +36,7 @@ TEST_CASE("test_fifo_initial_state") {
 
     Fifo<int, FIFO_SIZE> fifo{};
     CHECK_MESSAGE(fifo.getCount() == 0, "FIFO should be empty on initialization");
-    CHECK_FALSE_MESSAGE(fifo.pop_back(&value),
+    CHECK_FALSE_MESSAGE(fifo.pop(&value),
                   "Read elements from empty FIFO should not be possible");
     CHECK_MESSAGE(fifo.read(&value, 1) == 0, "Read elements from empty FIFO should not be possible");
 }
@@ -57,7 +57,7 @@ TEST_CASE("test_fifo_push_and_pop") {
     CHECK_MESSAGE(fifo.push(42), "Push should succeed");
     CHECK_MESSAGE(fifo.getCount() == 1, "FIFO count should be 1 after push");
 
-    CHECK_MESSAGE(fifo.pop_back(&value), "Pop should succeed");
+    CHECK_MESSAGE(fifo.pop(&value), "Pop should succeed");
     CHECK_MESSAGE(value == 42, "Popped value should match pushed value");
     CHECK_MESSAGE(fifo.getCount() == 0, "FIFO should be empty after popping");
 }
@@ -89,9 +89,9 @@ TEST_CASE("test_fifo_overwrite") {
     fifo.push(values_2, true);
 
     CHECK_MESSAGE(fifo.getCount() == FIFO_SIZE, "FIFO should remain full after overwrite");
-    fifo.pop_back(&value);
+    fifo.pop(&value);
     CHECK_MESSAGE(value == 11, "All elements should have been overwritten");
-    fifo.pop_back(&value);
+    fifo.pop(&value);
     CHECK_MESSAGE(value == 12, "Try another pop");
     CHECK_MESSAGE(fifo.getCount() == FIFO_SIZE - 2, "Check get count");
 
@@ -106,7 +106,7 @@ TEST_CASE("test_fifo_reset") {
 
     fifo.reset();
     CHECK_MESSAGE(fifo.getCount() == 0, "FIFO should be empty after reset");
-    CHECK_FALSE_MESSAGE(fifo.pop_back(&val),
+    CHECK_FALSE_MESSAGE(fifo.pop(&val),
                   "Read elements from empty FIFO should not be possible");
     CHECK_MESSAGE(fifo.read(&val, 1) == 0, "Read elements from empty FIFO should not be possible");
 }
@@ -146,7 +146,7 @@ TEST_CASE("test_equality") {
     CHECK(fifo_0 == fifo_1);
 
     int value;
-    fifo_2.pop_back(&value);
+    fifo_2.pop(&value);
     CHECK(fifo_0 == fifo_2);
 
     fifo_3.push({1, 2, 3}, true);

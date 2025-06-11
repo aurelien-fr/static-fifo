@@ -1,19 +1,19 @@
 /**
  * @file FIFO.hpp
  * @author aurelien.dhiver@outlook.fr
- * 
+ *
  * Copyright (c) 2025 aurelien.dhiver@outlook.fr
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,7 +21,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- * 
+ *
  */
 
 #include <algorithm>
@@ -62,7 +62,7 @@ class Fifo {
      * @brief Get current number of elements to be read in the FIFO buffer
      * @return Number of elements
      */
-    size_t getCount() { return m_nbElements; }
+    size_t getCount() const { return m_nbElements; }
 
     /**
      * @brief Empty the FIFO, delete all the data
@@ -74,11 +74,11 @@ class Fifo {
     }
 
     /**
-     * @brief Read a single element from the FIFO
+     * @brief Pull the first element from the FIFO
      * @param[out] dest Where a single byte from the FIFO is written
      * @return True if reading is done, otherwise false
      */
-    bool pop_back(T *const dest) {
+    bool pop(T *const dest) {
         auto ret = true;
         assert(dest != nullptr);
 
@@ -227,7 +227,7 @@ class Fifo {
 
     /**
      * @brief Access to a specific element in the circular buffer
-     * @warning It's the caller responsability to access the right index, otherwise undefined number
+     * @warning It's the caller responsability to access the right index (< nb elements), otherwise undefined number
      */
     T &operator[](std::size_t idx) {
         auto readIndex = (m_readIdx + idx) % t_size;
